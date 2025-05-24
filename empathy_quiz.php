@@ -66,6 +66,103 @@ while ($qRow = $qRes->fetch_assoc()) {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Empathy Quiz or Test</title>
 <style>
+  /* Navbar styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 15px 30px;
+  color: white;
+}
+
+.logo {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #ffcc00;
+  text-decoration: underline;
+}
+.navbar {
+  position: fixed; /* Keeps navbar at top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Keeps it above everything */
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(to right, #4b2e83, #5e4a9f); /* deep purple gradient */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  font-size: 1.8em;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: #fefefe;
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffcc70; /* soft gold */
+  text-decoration: underline;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+main {
+  margin-top: 80px; /* Adjust to match navbar height */
+  padding: 20px;
+}
   /* Reset */
   * {
     box-sizing: border-box;
@@ -186,6 +283,17 @@ while ($qRow = $qRes->fetch_assoc()) {
 </style>
 </head>
 <body>
+    <header>
+  <nav class="navbar">
+    <div class="logo">Empathy Simulator</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Empathy Simulator</a></li>
+      <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
+      <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
+      <li><a href="art_gallery.php">Empathy Art</a></li>
+    </ul>
+  </nav>
+</header>
 
 <header>
   <h1>Empathy Quiz or Test</h1>
@@ -240,3 +348,4 @@ while ($qRow = $qRes->fetch_assoc()) {
 
 </body>
 </html>
+

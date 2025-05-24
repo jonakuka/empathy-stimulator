@@ -45,6 +45,7 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
       background: #f4f4f9;
       margin: 0;
       padding: 0;
+      color: #333;
     }
 
     /* Navbar styles */
@@ -107,7 +108,7 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
     }
 
     h2, h4 {
-      color: #333;
+      color: #4b2e83;
       margin-top: 0;
     }
 
@@ -152,6 +153,7 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
       margin-top: 1rem;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      color: #333;
     }
 
     .timestamp {
@@ -195,61 +197,67 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
       margin-top: 8px;
     }
 
+    @media (max-width: 480px) {
+      main {
+        padding: 15px 10px;
+        margin-top: 90px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <nav class="navbar">
-    <div class="logo">Empathy Simulator</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Empathy Simulator</a></li>
-      <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
-      <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
-      <li><a href="read_stories.php">Read Stories</a></li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Empathy Simulator</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Empathy Simulator</a></li>
+        <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
+        <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
+        <li><a href="art_gallery.php">Empathy Art</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<main>
-  <div class="container">
-    <h2>Share Your Anonymous Advice 💬</h2>
-    <form method="POST" action="">
-      <textarea name="advice" placeholder="Write something helpful, kind, or thoughtful..." required></textarea>
-      <button type="submit">Post Anonymously</button>
-    </form>
-  </div>
-
-  <h2>Recent Advice</h2>
-
-  <?php while($advice = $adviceResult->fetch_assoc()): ?>
-    <div class="container advice-box">
-      <?= htmlspecialchars($advice['advice']) ?>
-      <div class="timestamp"><?= date("F j, Y, g:i a", strtotime($advice['created_at'])) ?></div>
-
-      <!-- Comments section -->
-      <div class="comments-section">
-        <h4>Comments:</h4>
-        <?php 
-          if (!empty($commentsByAdvice[$advice['id']])) {
-            foreach ($commentsByAdvice[$advice['id']] as $comment) {
-              echo '<div class="comment">' . htmlspecialchars($comment['comment']) . '<div class="comment-time">' . date("M j, Y, g:i a", strtotime($comment['created_at'])) . '</div></div>';
-            }
-          } else {
-            echo '<p style="color:#888; font-style: italic;">No comments yet.</p>';
-          }
-        ?>
-
-        <!-- Comment form -->
-        <form method="POST" action="" class="comment-form">
-          <input type="hidden" name="advice_id" value="<?= $advice['id'] ?>" />
-          <textarea name="comment" placeholder="Add a comment..." required></textarea>
-          <button type="submit">Comment</button>
-        </form>
-      </div>
+  <main>
+    <div class="container">
+      <h2>Share Your Anonymous Advice 💬</h2>
+      <form method="POST" action="">
+        <textarea name="advice" placeholder="Write something helpful, kind, or thoughtful..." required></textarea>
+        <button type="submit">Post Anonymously</button>
+      </form>
     </div>
-  <?php endwhile; ?>
-</main>
+
+    <h2>Recent Advice</h2>
+
+    <?php while($advice = $adviceResult->fetch_assoc()): ?>
+      <div class="container advice-box">
+        <?= nl2br(htmlspecialchars($advice['advice'])) ?>
+        <div class="timestamp"><?= date("F j, Y, g:i a", strtotime($advice['created_at'])) ?></div>
+
+        <!-- Comments section -->
+        <div class="comments-section">
+          <h4>Comments:</h4>
+          <?php 
+            if (!empty($commentsByAdvice[$advice['id']])) {
+              foreach ($commentsByAdvice[$advice['id']] as $comment) {
+                echo '<div class="comment">' . nl2br(htmlspecialchars($comment['comment'])) . '<div class="comment-time">' . date("M j, Y, g:i a", strtotime($comment['created_at'])) . '</div></div>';
+              }
+            } else {
+              echo '<p style="color:#888; font-style: italic;">No comments yet.</p>';
+            }
+          ?>
+
+          <!-- Comment form -->
+          <form method="POST" action="" class="comment-form">
+            <input type="hidden" name="advice_id" value="<?= $advice['id'] ?>" />
+            <textarea name="comment" placeholder="Add a comment..." required></textarea>
+            <button type="submit">Comment</button>
+          </form>
+        </div>
+      </div>
+    <?php endwhile; ?>
+  </main>
 
 </body>
 </html>
