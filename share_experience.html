@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Share Your Experience</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      background: #f4f4f9;
+      color: #333;
+    }
+
+    .navbar {
+      background: linear-gradient(to right, #4b2e83, #5e4a9f);
+      padding: 15px 30px;
+      color: white;
+      font-size: 1.4em;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 80px auto 40px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #4b2e83;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #4b2e83;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a1f6b;
+    }
+
+    .success {
+      color: green;
+      margin-top: 15px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">Empathy Simulator – Share Your Story</div>
+
+  <div class="container">
+    <h2>Share Your Experience</h2>
+
+    <form id="experienceForm">
+      <label for="name">Your Name (Optional)</label>
+      <input type="text" id="name" name="name" placeholder="Jane Doe" />
+
+      <label for="story">Your Experience</label>
+      <textarea id="story" name="story" rows="8" placeholder="Describe your experience..."></textarea>
+
+      <button type="submit">Submit</button>
+      <div class="success" id="message"></div>
+    </form>
+  </div>
+
+  <script>
+  document.getElementById("experienceForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const story = document.getElementById("story").value.trim();
+
+    if (!story) {
+      alert("Please write your experience before submitting.");
+      return;
+    }
+
+    fetch("submit_experience.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ name, story }),
+    })
+    .then((response) => response.text())
+    .then((result) => {
+      if (result === "success") {
+        document.getElementById("message").innerText = "Thank you for sharing your story!";
+        document.getElementById("experienceForm").reset();
+      } else {
+        document.getElementById("message").innerText = "Error: " + result;
+      }
+    })
+    .catch((error) => {
+      document.getElementById("message").innerText = "Something went wrong.";
+      console.error("Error:", error);
+    });
+  });
+    document.getElementById("experienceForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const story = document.getElementById("story").value.trim();
+
+      if (!story) {
+        alert("Please write your experience before submitting.");
+        return;
+      }
+
+      // Simulate sending data to server
+      console.log("Submitted:", { name, story });
+
+      // Show success message
+      document.getElementById("message").innerText = "Thank you for sharing your story!";
+      document.getElementById("experienceForm").reset();
+    });
+  </script>
+
+</body>
+</html>
