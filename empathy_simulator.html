@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Empathy Simulator - Walk in Their Shoes</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">Empathy Simulator</div>
+      <ul class="nav-links">
+        <li><a href="empathy_simulator.html">Empathy Simulator</a></li>
+        <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
+        <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
+        <li><a href="art_gallery.php">Empathy Art</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Welcome to the Empathy Simulator</h1>
+      <p class="intro-text">
+        Step into someone else's shoes and explore life from a different perspective.
+        This simulator is designed to foster compassion, awareness, and understanding of the challenges others face.
+        Select a story below and begin your journey of empathy.
+      </p>
+    </section>
+
+    <section class="simulation-selector">
+      <label for="scenarioSelect">Choose a story to experience:</label>
+      <select id="scenarioSelect">
+        <option value="" disabled selected>Select a scenario</option>
+        <option value="homeless">A Day as a Homeless Teen</option>
+        <option value="blind">Navigating Life Without Sight</option>
+      </select>
+      <button id="startBtn">Start Simulation</button>
+    </section>
+
+    <section id="simulator">
+      <img id="stepImage" alt="Scene Image" />
+      <p id="storyText"></p>
+      <div id="options"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Empathy Simulator. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

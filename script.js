@@ -1,108 +1,152 @@
 const scenarios = {
-  "homeless": [
-    {
-      text: "You wake up on a bench. It's freezing and you haven’t eaten in a day.",
-      options: [
-        { text: "Look for food", next: 1 },
-        { text: "Find shelter", next: 2 }
-      ]
-    },
-    {
-      text: "You search trash bins. A store owner yells at you to leave.",
-      options: [
-        { text: "Apologize", next: 3 },
-        { text: "Run away", next: 4 }
-      ]
-    },
-    {
-      text: "You go to a shelter. It’s full. You sleep outside again.",
-      options: []
-    },
-    {
-      text: "The store owner calms down. He offers leftover food.",
-      options: []
-    },
-    {
-      text: "You run and sprain your ankle. It hurts to move.",
-      options: []
+  homeless: {
+    steps: {
+      1: {
+        text: "You wake up in a cold, empty alley. You have nowhere to go and no one to rely on.",
+        image: "https://via.placeholder.com/600x400?text=Alley+Morning",
+        options: [
+          { text: "Look for food nearby", nextStep: 2 },
+          { text: "Try to find a shelter", nextStep: 3 }
+        ]
+      },
+      2: {
+        text: "You find a small bakery. The smell is tempting, but you have no money.",
+        image: "https://via.placeholder.com/600x400?text=Bakery",
+        options: [
+          { text: "Ask for leftover bread", nextStep: 4 },
+          { text: "Keep searching the streets", nextStep: 5 }
+        ]
+      },
+      3: {
+        text: "You find a community shelter, but it is full.",
+        image: "https://via.placeholder.com/600x400?text=Full+Shelter",
+        options: [
+          { text: "Wait outside and hope for a spot", nextStep: 5 },
+          { text: "Look for another place", nextStep: 2 }
+        ]
+      },
+      4: {
+        text: "The baker kindly gives you some leftover bread. You feel a bit hopeful.",
+        image: "https://via.placeholder.com/600x400?text=Kind+Baker",
+        options: [
+          { text: "Eat the bread here", nextStep: 6 },
+          { text: "Save it for later", nextStep: 6 }
+        ]
+      },
+      5: {
+        text: "The streets are tough and you feel cold and hungry.",
+        image: "https://via.placeholder.com/600x400?text=Cold+Street",
+        options: [
+          { text: "Keep trying to find shelter", nextStep: 3 },
+          { text: "Ask a passerby for help", nextStep: 6 }
+        ]
+      },
+      6: {
+        text: "You realize how hard life is without a stable home. Stay strong and keep hope.",
+        image: "https://via.placeholder.com/600x400?text=Hope",
+        options: []
+      }
     }
-  ],
-  "blind": [
-    {
-      text: "You need to cross a busy street. You can only hear the traffic.",
-      options: [
-        { text: "Wait for someone to help", next: 1 },
-        { text: "Try to cross alone", next: 2 }
-      ]
-    },
-    {
-      text: "No one comes. You wait 10 minutes.",
-      options: []
-    },
-    {
-      text: "A car honks. You panic mid-crossing.",
-      options: []
+  },
+
+  blind: {
+    steps: {
+      1: {
+        text: "You wake up in your room but can't see anything. You need to get ready for the day.",
+        image: "https://via.placeholder.com/600x400?text=Dark+Room",
+        options: [
+          { text: "Try to find your cane", nextStep: 2 },
+          { text: "Call a friend for help", nextStep: 3 }
+        ]
+      },
+      2: {
+        text: "You find your cane and start feeling your way to the door.",
+        image: "https://via.placeholder.com/600x400?text=Cane",
+        options: [
+          { text: "Navigate to the kitchen", nextStep: 4 },
+          { text: "Stay inside and listen to music", nextStep: 5 }
+        ]
+      },
+      3: {
+        text: "Your friend answers and offers to come over later.",
+        image: "https://via.placeholder.com/600x400?text=Phone+Call",
+        options: [
+          { text: "Wait for your friend", nextStep: 5 },
+          { text: "Try to move around on your own", nextStep: 2 }
+        ]
+      },
+      4: {
+        text: "You reach the kitchen and start making breakfast with your other senses.",
+        image: "https://via.placeholder.com/600x400?text=Kitchen",
+        options: [
+          { text: "Try to pour cereal carefully", nextStep: 6 },
+          { text: "Make coffee instead", nextStep: 6 }
+        ]
+      },
+      5: {
+        text: "Listening to music helps calm you, but you want to be independent.",
+        image: "https://via.placeholder.com/600x400?text=Music",
+        options: [
+          { text: "Practice using your cane", nextStep: 2 },
+          { text: "Call your friend again", nextStep: 3 }
+        ]
+      },
+      6: {
+        text: "You feel proud of your independence and strength.",
+        image: "https://via.placeholder.com/600x400?text=Proud",
+        options: []
+      }
     }
-  ]
+  }
 };
 
-let currentStep = 0;
-let currentScenario = [];
+let currentScenario = null;
+let currentStep = null;
 
-function startSimulation() {
-  const choice = document.getElementById("scenarioSelect").value;
-  currentScenario = scenarios[choice];
-  currentStep = 0;
-  document.getElementById("simulator").style.display = "block";
-  document.getElementById("feedbackSection").style.display = "none"; // reset
-  showStep();
-}
+const scenarioSelect = document.getElementById("scenarioSelect");
+const startBtn = document.getElementById("startBtn");
+const simulator = document.getElementById("simulator");
+const stepImage = document.getElementById("stepImage");
+const storyText = document.getElementById("storyText");
+const optionsDiv = document.getElementById("options");
 
-function showStep() {
-  const step = currentScenario[currentStep];
-  document.getElementById("storyText").innerText = step.text;
+startBtn.addEventListener("click", () => {
+  const selected = scenarioSelect.value;
+  if (!selected) {
+    alert("Please select a scenario first.");
+    return;
+  }
+  currentScenario = scenarios[selected];
+  currentStep = 1;
+  simulator.style.display = "block";
+  showStep(currentStep);
+});
 
-  const optionsDiv = document.getElementById("options");
+function showStep(stepNumber) {
+  const step = currentScenario.steps[stepNumber];
+  if (!step) return;
+
+  stepImage.src = step.image || "";
+  stepImage.style.display = step.image ? "block" : "none";
+  storyText.textContent = step.text;
   optionsDiv.innerHTML = "";
 
- if (step.options.length === 0) {
-  const endMsg = document.createElement("p");
-  endMsg.innerText = "Simulation complete. What did you feel?";
-  optionsDiv.appendChild(endMsg);
-
-  // SHOW FEEDBACK BOX
-  document.getElementById("feedbackSection").style.display = "block";
-  return;
-}
-
-    // Show the feedback box
-    document.getElementById("feedbackSection").style.display = "block";
+  if (step.options.length === 0) {
+    const endMsg = document.createElement("p");
+    endMsg.textContent = "The End. Thank you for walking in someone else's shoes.";
+    endMsg.className = "end-message";
+    optionsDiv.appendChild(endMsg);
     return;
   }
 
-  step.options.forEach(opt => {
+  step.options.forEach(option => {
     const btn = document.createElement("button");
-    btn.innerText = opt.text;
-    btn.onclick = () => {
-      currentStep = opt.next;
-      showStep();
-    };
+    btn.className = "option-btn";
+    btn.textContent = option.text;
+    btn.addEventListener("click", () => {
+      currentStep = option.nextStep;
+      showStep(currentStep);
+    });
     optionsDiv.appendChild(btn);
   });
-
-
-function submitFeedback() {
-  const feedback = document.getElementById("feedbackText").value.trim();
-
-  if (!feedback) {
-    alert("Please share your thoughts before submitting.");
-    return;
-  }
-
-  alert("Thank you for your feedback!");
-  document.getElementById("feedbackSection").style.display = "none";
-  document.getElementById("feedbackText").value = "";
 }
-
-
-

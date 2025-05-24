@@ -2,149 +2,194 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Share Your Experience</title>
-  <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      background: #f4f4f9;
-      color: #333;
-    }
-
-    .navbar {
-      background: linear-gradient(to right, #4b2e83, #5e4a9f);
-      padding: 15px 30px;
-      color: white;
-      font-size: 1.4em;
-      font-weight: bold;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 80px auto 40px;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #4b2e83;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    button {
-      margin-top: 20px;
-      background-color: #4b2e83;
-      color: white;
-      padding: 12px 20px;
-      font-size: 1em;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #3a1f6b;
-    }
-
-    .success {
-      color: green;
-      margin-top: 15px;
-      text-align: center;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Empathy Simulator</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Empathy Simulator</div>
+      <ul class="nav-links">
+        <li><a href="empathy_simulator.html">Simulator</a></li>
+        <li><a href="empathy_quiz.php">Quiz</a></li>
+        <li><a href="anonymous_advice_wall.php">Advice Wall</a></li>
+        <li><a href="art_gallery.php">Empathy Art</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <div class="navbar">Empathy Simulator – Share Your Story</div>
+  <main>
+    <h1>Walk in Someone Else's Shoes</h1>
 
-  <div class="container">
-    <h2>Share Your Experience</h2>
+    <label for="scenarioSelect">Choose a story:</label>
+    <select id="scenarioSelect" aria-label="Choose a story">
+      <option value="" disabled selected>Select a scenario</option>
+      <option value="homeless">A Day as a Homeless Teen</option>
+      <option value="blind">Navigating Life Without Sight</option>
+    </select>
+    <button id="startBtn">Start Simulation</button>
 
-    <form id="experienceForm">
-      <label for="name">Your Name (Optional)</label>
-      <input type="text" id="name" name="name" placeholder="Jane Doe" />
-
-      <label for="story">Your Experience</label>
-      <textarea id="story" name="story" rows="8" placeholder="Describe your experience..."></textarea>
-
-      <button type="submit">Submit</button>
-      <div class="success" id="message"></div>
-    </form>
-  </div>
+    <section id="simulator" aria-live="polite">
+      <img id="stepImage" alt="Scene Image" />
+      <p id="storyText"></p>
+      <div id="options"></div>
+    </section>
+  </main>
 
   <script>
-  document.getElementById("experienceForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value.trim();
-    const story = document.getElementById("story").value.trim();
-
-    if (!story) {
-      alert("Please write your experience before submitting.");
-      return;
-    }
-
-    fetch("submit_experience.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+    const scenarios = {
+      homeless: {
+        steps: {
+          1: {
+            text: "You wake up in a cold, empty alley. You have nowhere to go and no one to rely on.",
+            image: "https://via.placeholder.com/600x400?text=Alley+Morning",
+            options: [
+              { text: "Look for food nearby", nextStep: 2 },
+              { text: "Try to find a shelter", nextStep: 3 }
+            ]
+          },
+          2: {
+            text: "You find a small bakery. The smell is tempting, but you have no money.",
+            image: "https://via.placeholder.com/600x400?text=Bakery",
+            options: [
+              { text: "Ask for leftover bread", nextStep: 4 },
+              { text: "Keep searching the streets", nextStep: 5 }
+            ]
+          },
+          3: {
+            text: "You find a community shelter, but it is full.",
+            image: "https://via.placeholder.com/600x400?text=Full+Shelter",
+            options: [
+              { text: "Wait outside and hope for a spot", nextStep: 5 },
+              { text: "Look for another place", nextStep: 2 }
+            ]
+          },
+          4: {
+            text: "The baker kindly gives you some leftover bread. You feel a bit hopeful.",
+            image: "https://via.placeholder.com/600x400?text=Kind+Baker",
+            options: [
+              { text: "Eat the bread here", nextStep: 6 },
+              { text: "Save it for later", nextStep: 6 }
+            ]
+          },
+          5: {
+            text: "The streets are tough and you feel cold and hungry.",
+            image: "https://via.placeholder.com/600x400?text=Cold+Street",
+            options: [
+              { text: "Keep trying to find shelter", nextStep: 3 },
+              { text: "Ask a passerby for help", nextStep: 6 }
+            ]
+          },
+          6: {
+            text: "You realize how hard life is without a stable home. Stay strong and keep hope.",
+            image: "https://via.placeholder.com/600x400?text=Hope",
+            options: []
+          }
+        }
       },
-      body: new URLSearchParams({ name, story }),
-    })
-    .then((response) => response.text())
-    .then((result) => {
-      if (result === "success") {
-        document.getElementById("message").innerText = "Thank you for sharing your story!";
-        document.getElementById("experienceForm").reset();
-      } else {
-        document.getElementById("message").innerText = "Error: " + result;
+      blind: {
+        steps: {
+          1: {
+            text: "You wake up in your room but can't see anything. You need to get ready for the day.",
+            image: "https://via.placeholder.com/600x400?text=Dark+Room",
+            options: [
+              { text: "Try to find your cane", nextStep: 2 },
+              { text: "Call a friend for help", nextStep: 3 }
+            ]
+          },
+          2: {
+            text: "You find your cane and start feeling your way to the door.",
+            image: "https://via.placeholder.com/600x400?text=Cane",
+            options: [
+              { text: "Navigate to the kitchen", nextStep: 4 },
+              { text: "Stay inside and listen to music", nextStep: 5 }
+            ]
+          },
+          3: {
+            text: "Your friend answers and offers to come over later.",
+            image: "https://via.placeholder.com/600x400?text=Phone+Call",
+            options: [
+              { text: "Wait for your friend", nextStep: 5 },
+              { text: "Try to move around on your own", nextStep: 2 }
+            ]
+          },
+          4: {
+            text: "You reach the kitchen and start making breakfast with your other senses.",
+            image: "https://via.placeholder.com/600x400?text=Kitchen",
+            options: [
+              { text: "Try to pour cereal carefully", nextStep: 6 },
+              { text: "Make coffee instead", nextStep: 6 }
+            ]
+          },
+          5: {
+            text: "Listening to music helps calm you, but you want to be independent.",
+            image: "https://via.placeholder.com/600x400?text=Music",
+            options: [
+              { text: "Practice using your cane", nextStep: 2 },
+              { text: "Call your friend again", nextStep: 3 }
+            ]
+          },
+          6: {
+            text: "You feel proud of your independence and strength.",
+            image: "https://via.placeholder.com/600x400?text=Proud",
+            options: []
+          }
+        }
       }
-    })
-    .catch((error) => {
-      document.getElementById("message").innerText = "Something went wrong.";
-      console.error("Error:", error);
+    };
+
+    let currentScenario = null;
+    let currentStep = null;
+
+    const scenarioSelect = document.getElementById("scenarioSelect");
+    const startBtn = document.getElementById("startBtn");
+    const simulator = document.getElementById("simulator");
+    const stepImage = document.getElementById("stepImage");
+    const storyText = document.getElementById("storyText");
+    const optionsDiv = document.getElementById("options");
+
+    startBtn.addEventListener("click", () => {
+      const selected = scenarioSelect.value;
+      if (!selected) {
+        alert("Please select a scenario first.");
+        return;
+      }
+      currentScenario = scenarios[selected];
+      currentStep = 1;
+      simulator.style.display = "block";
+      showStep(currentStep);
     });
-  });
-    document.getElementById("experienceForm").addEventListener("submit", function(e) {
-      e.preventDefault();
 
-      const name = document.getElementById("name").value.trim();
-      const story = document.getElementById("story").value.trim();
+    function showStep(stepNumber) {
+      const step = currentScenario.steps[stepNumber];
+      if (!step) return;
 
-      if (!story) {
-        alert("Please write your experience before submitting.");
+      stepImage.src = step.image || "";
+      stepImage.style.display = step.image ? "block" : "none";
+      storyText.textContent = step.text;
+      optionsDiv.innerHTML = "";
+
+      if (step.options.length === 0) {
+        const endMsg = document.createElement("p");
+        endMsg.textContent = "The End. Thank you for trying to understand another person's experience.";
+        endMsg.className = "end-message";
+        optionsDiv.appendChild(endMsg);
         return;
       }
 
-      // Simulate sending data to server
-      console.log("Submitted:", { name, story });
-
-      // Show success message
-      document.getElementById("message").innerText = "Thank you for sharing your story!";
-      document.getElementById("experienceForm").reset();
-    });
+      step.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = option.text;
+        btn.addEventListener("click", () => {
+          currentStep = option.nextStep;
+          showStep(currentStep);
+        });
+        optionsDiv.appendChild(btn);
+      });
+    }
   </script>
-
 </body>
 </html>
