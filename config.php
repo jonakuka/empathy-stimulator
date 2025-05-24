@@ -1,15 +1,16 @@
-<?php 
-    $user = "root";
-    $pass = "";
-    $server = "localhost";
-    $dbname = "dbjona";
+<?php
+// config.php
 
-    try{
-        $conn = new PDO("mysql:host = $server; dbname=$dbname", $user,$pass);
-    }catch(PDOException $e){
-        echo "error:". $e->getMessage();
-    }
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "dbjona";
 
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 ?>
