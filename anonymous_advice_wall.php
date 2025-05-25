@@ -106,6 +106,22 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       margin-bottom: 2rem;
     }
+    * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  header {
+    background: linear-gradient(90deg, #4b2e83, #5e4a9f);
+    padding: 2rem 1rem;
+    color: white;
+    text-align: center;
+  }
 
     h2, h4 {
       color: #4b2e83;
@@ -169,6 +185,107 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
       padding-left: 1rem;
       border-left: 3px solid #6c63ff;
     }
+    /* ...existing code... */
+    /* Navbar styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #5e4a9f, #4b2e83);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  z-index: 1000;
+  box-shadow: 0 6px 15px rgba(75, 46, 131, 0.5);
+  backdrop-filter: saturate(180%) blur(8px);
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.navbar:hover {
+  background: linear-gradient(90deg, #6c63ff, #4b2e83);
+  box-shadow: 0 8px 20px rgba(108, 99, 255, 0.6);
+}
+
+.logo {
+  font-size: 2.2rem;
+  font-weight: 900;
+  background: linear-gradient(45deg, #ffcc70, #6c63ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: default;
+  user-select: none;
+  letter-spacing: 2px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: #fefefe;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 5px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: #ffcc70;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffcc70;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, #f8fafc 0%, #e0c3fc 100%);
+  background-attachment: fixed;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
+}
+/* ...existing code... */
 
     .comments-section h4 {
       margin-bottom: 0.5rem;
@@ -207,7 +324,7 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
 </head>
 <body>
 
-  <header>
+<!-- Replace your current <nav class="navbar"> ... </nav> with the following: -->
     <nav class="navbar">
       <div class="logo">Empathy Simulator</div>
       <ul class="nav-links">
@@ -217,7 +334,6 @@ while ($commentRow = $commentsResult->fetch_assoc()) {
         <li><a href="art_gallery.php">Empathy Art</a></li>
       </ul>
     </nav>
-  </header>
 
   <main>
     <div class="container">

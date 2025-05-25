@@ -1,10 +1,8 @@
 <?php
-// config.php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dbjona";
+$servername = "localhost"; // or the IP address of your DB server
+$username = "root"; // Your MySQL username
+$password = ""; // Your MySQL password
+$dbname = "dbjona"; // Your database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

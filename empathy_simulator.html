@@ -26,7 +26,6 @@
       <h1>Welcome to the Empathy Simulator</h1>
       <p class="intro-text">
         Step into someone else's shoes and explore life from a different perspective.
-        This simulator is designed to foster compassion, awareness, and understanding of the challenges others face.
         Select a story below and begin your journey of empathy.
       </p>
     </section>
@@ -37,6 +36,10 @@
         <option value="" disabled selected>Select a scenario</option>
         <option value="homeless">A Day as a Homeless Teen</option>
         <option value="blind">Navigating Life Without Sight</option>
+        <option value="refugee">Fleeing Home as a Refugee</option>
+        <option value="bullying">Living with School Bullying</option>
+        <option value="wheelchair">Life in a Wheelchair</option>
+        <option value="anxiety">Struggling with Anxiety in Public</option>
       </select>
       <button id="startBtn">Start Simulation</button>
     </section>
@@ -48,10 +51,75 @@
     </section>
   </main>
 
+  <main>
+    <section class="feedback-form">
+      <h1>💬 Share Your Experience</h1>
+      <p class="subtitle">We value your perspective. How did the simulation impact you emotionally?</p>
+      <form id="feedbackForm" action="submit_feedback.php" method="post" novalidate>
+        <div class="form-group">
+          <label for="feeling">How did you feel after the simulation?</label>
+          <select name="feeling" id="feeling" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="deeply_moved">😭 I was deeply moved</option>
+            <option value="gained_new_perspective">🧠 I gained a new perspective</option>
+            <option value="felt_sadness">😢 I felt sadness</option>
+            <option value="felt_inspired">✨ I felt inspired to take action</option>
+            <option value="somewhat_empathized">🙂 I somewhat empathized</option>
+            <option value="confused_or_overwhelmed">😵 I felt confused or overwhelmed</option>
+            <option value="did_not_relate">😐 I did not relate</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="comments">Would you like to share more about your experience?</label>
+          <textarea name="comments" id="comments" rows="4" placeholder="Your thoughts..." maxlength="500"></textarea>
+        </div>
+
+        <button type="submit">Submit Feedback</button>
+      </form>
+      <div id="formMessage" style="margin-top:10px; font-weight:bold;"></div>
+    </section>
+  </main>
+
   <footer>
     <p>&copy; 2025 Empathy Simulator. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const msgDiv = document.getElementById('formMessage');
+      msgDiv.textContent = 'Submitting...';
+      msgDiv.style.color = 'black';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const result = await response.json();
+
+        if (result.success) {
+          msgDiv.style.color = 'green';
+          msgDiv.textContent = result.message;
+          form.reset();
+        } else {
+          msgDiv.style.color = 'red';
+          msgDiv.textContent = result.message;
+        }
+      } catch (error) {
+        msgDiv.style.color = 'red';
+        msgDiv.textContent = 'An error occurred. Please try again later.';
+        console.error('Error:', error);
+      }
+    });
+  </script>
+
 </body>
 </html>

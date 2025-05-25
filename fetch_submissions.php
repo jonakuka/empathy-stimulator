@@ -1,11 +1,15 @@
 <?php
 header('Content-Type: application/json');
+
 include 'config.php';
 
-$pdo = getPDO();
+$res = $conn->query("SELECT * FROM empathy_art_submissions ORDER BY id DESC");
 
-$stmt = $pdo->query("SELECT title, category, description, imageUrl FROM empathy_art_submissions ORDER BY created_at DESC LIMIT 50");
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$items = [];
+while ($row = $res->fetch_assoc()) {
+    $items[] = $row;
+}
 
-echo json_encode($results);
+echo json_encode($items);
+$conn->close();
 ?>

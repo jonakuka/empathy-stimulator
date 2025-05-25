@@ -1,34 +1,36 @@
 <?php
 header('Content-Type: application/json');
-include 'config.php';
 
-$pdo = getPDO();
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+error_log(print_r($_POST, true));  // Log form data to check if it's being sent correctly
 
+// Database connection
+include 'config.php'; // Make sure this file contains a valid connection to your database
+
+// Get and sanitize input
 $title = trim($_POST['title'] ?? '');
-$category = $_POST['category'] ?? '';
+$category = trim($_POST['category'] ?? '');
 $description = trim($_POST['description'] ?? '');
 $imageUrl = trim($_POST['imageUrl'] ?? '');
 
-$allowed_categories = ['photo', 'painting', 'quote'];
-
-if (!$title || !$description || !in_array($category, $allowed_categories)) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Invalid input']);
+// Validate required fields
+if (!$title || !$category || !$description) {
+    echo json_encode(['success' => false, 'error' => 'Missing required fields.']);
     exit;
 }
 
-if ($imageUrl && !filter_var($imageUrl, FILTER_VALIDATE_URL)) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Invalid image URL']);
-    exit;
-}
+// Prepare and execute statement
+$stmt = $conn->prepare("INSERT INTO empathy_art_submissions (title, category, description, imageUrl) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("ssss", $title, $category, $description, $imageUrl);
 
-$stmt = $pdo->prepare("INSERT INTO empathy_art_submissions (title, category, description, imageUrl) VALUES (?, ?, ?, ?)");
-try {
-    $stmt->execute([$title, $category, $description, $imageUrl ?: null]);
+if ($stmt->execute()) {
     echo json_encode(['success' => true]);
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Failed to save submission']);
+} else {
+    echo json_encode(['success' => false, 'error' => $stmt->error]);
 }
+
+$stmt->close();
+$conn->close();
 ?>
