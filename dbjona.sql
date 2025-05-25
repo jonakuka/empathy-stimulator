@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2025 at 04:38 PM
+-- Generation Time: May 25, 2025 at 11:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -53,6 +53,20 @@ CREATE TABLE `anonymous_advice_wall` (
   `message` text NOT NULL,
   `category` varchar(100) DEFAULT NULL,
   `submission_time` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat_messages`
+--
+
+CREATE TABLE `chat_messages` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `feeling` varchar(50) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -234,7 +248,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
 (1, 'jona', 'jonakuka123@gmail.com', '$2y$10$jp88fH5URzf.QVLLdd/VVOW9bQGSTAbm56n5b03UvS8SUmRsbS9Ca'),
-(2, 'olti', 'oltikajtazi@gmail.com', '$2y$10$qSjuxRn83yjJdsjXp1yIAu8SepkSi0a/vdSO9DE0mzzJgEXo0ACBu');
+(2, 'olti', 'oltikajtazi@gmail.com', '$2y$10$qSjuxRn83yjJdsjXp1yIAu8SepkSi0a/vdSO9DE0mzzJgEXo0ACBu'),
+(3, 'eliona', 'eliona@gmail.com', '$2y$10$Rl6JJUbeRZfV/A0jMBlHi.WCoTptZC5HqNgSj39r/7zZ.vrSR8m9i');
 
 --
 -- Indexes for dumped tables
@@ -251,6 +266,13 @@ ALTER TABLE `advice_wall`
 --
 ALTER TABLE `anonymous_advice_wall`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `comments`
@@ -323,6 +345,12 @@ ALTER TABLE `anonymous_advice_wall`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
@@ -356,7 +384,7 @@ ALTER TABLE `empathy_quiz_submissions`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -368,11 +396,17 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD CONSTRAINT `chat_messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `comments`

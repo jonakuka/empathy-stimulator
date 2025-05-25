@@ -5,7 +5,7 @@ $password = ""; // Your MySQL password
 $dbname = "dbjona"; // Your database name
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli('localhost', 'root', '', 'dbjona');
 
 // Check connection
 if ($conn->connect_error) {

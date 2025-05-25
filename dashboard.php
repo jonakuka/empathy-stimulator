@@ -145,5 +145,6 @@ $conn->close();
       <p>No feedback from others yet. Be the first to share your feelings!</p>
     <?php endif; ?>
   </div>
+
 </body>
 </html>

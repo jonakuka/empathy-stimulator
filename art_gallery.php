@@ -76,6 +76,25 @@
   padding-bottom: 5px;
   transition: color 0.3s ease;
 }
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: #ffcc70;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffcc70;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
 /* Navbar styles */
 .navbar {
   position: fixed;
@@ -153,79 +172,6 @@
 .nav-links a:hover::after {
   width: 100%;
 }
-
-
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background: #ffcc70;
-  transition: width 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #ffcc70;
-}
-
-.nav-links a:hover::after {
-  width: 100%;
-}
-
-
-  .container {
-    max-width: 700px;
-    background: rgba(255, 255, 255, 0.07);
-    border-radius: 16px;
-    padding: 2rem 3rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(10px);
-    width: 100%;
-  }
-
-  /* Navbar styles */
-  .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: linear-gradient(to right, #4b2e83, #5e4a9f);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-  .logo {
-    font-size: 1.8em;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-  }
-  .nav-links a {
-    color: #fefefe;
-    text-decoration: none;
-    font-size: 1em;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  .nav-links a:hover {
-    color: #ffcc70;
-    text-decoration: underline;
-  }
-
-  main {
-    margin-top: 80px;
-    padding: 20px;
-  }
-
   h1, h2 {
     text-align: center;
     color: #ffcc70;
@@ -370,21 +316,29 @@
     background: #7b56e1;
     box-shadow: 0 6px 20px #7b56e1cc;
   }
+  /* Add this to your <style> section */
+main.container {
+  margin-top: 90px; /* Adjust to match your navbar height */
+}
+/* Add this to your <style> section */
+main.container {
+  margin-top: 90px; /* Adjust to match your navbar height */
+}
 </style>
 </head>
 <body>
 
   
+<nav class="navbar">
+  <div class="logo">Empathy Simulator</div>
+  <ul class="nav-links">
+    <li><a href="empathy_simulator.php">Empathy Simulator</a></li>
+    <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
+    <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
+    <li><a href="art_gallery.php">Empathy Art</a></li>
   
-    <nav class="navbar">
-      <div class="logo">Empathy Simulator</div>
-      <ul class="nav-links">
-        <li><a href="empathy_simulator.html">Empathy Simulator</a></li>
-        <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
-        <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
-        <li><a href="art_gallery.php">Empathy Art</a></li>
-      </ul>
-    </nav>
+  </ul>
+</nav>
   
 
 
@@ -461,6 +415,62 @@
 </main>
 
 <script>
+          const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.setAttribute('tabindex', '0');
+        div.setAttribute('data-category', item.category);
+        div.setAttribute('aria-label', `${item.category} - ${item.title}`);
+
+        if (item.category === 'quote') {
+          div.innerHTML = `
+            <div class="caption" style="font-size:1.2rem; background: none; color:#ffcc70;">${item.title}</div>
+            <div class="quote" style="font-weight: 700; font-style: normal; color:#fff; margin-top: 0.5rem;">
+              "${item.description}"
+            </div>
+          `;
+        } else {
+          div.innerHTML = `
+            <img src="${item.image_url}" alt="${item.title}" />
+            <div class="caption">${item.title}</div>
+            <div class="quote">${item.description}</div>
+          `;
+
+          // Enable modal for dynamic image items
+          div.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            modalImg.src = item.image_url;
+            modalImg.alt = item.title;
+            modalCaption.textContent = `${item.title} — ${item.description}`;
+            modal.focus();
+          });
+
+          div.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              div.click();
+            }
+          });
+        }
+
+        gallery.appendChild(div);
+      });
+      // Load any existing submissions when the page loads
+window.addEventListener('DOMContentLoaded', loadSubmissions);
+
+
+  [
+  {
+    "title": "Kindness in Action",
+    "category": "photo",
+    "description": "A moment of shared laughter.",
+    "image_url": "https://example.com/photo.jpg"
+  },
+  {
+    "title": "Walk in Their Shoes",
+    "category": "quote",
+    "description": "Empathy begins with understanding life from another person’s perspective."
+  }
+]
   // Modal logic
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-img');

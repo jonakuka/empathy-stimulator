@@ -324,17 +324,18 @@ body::before {
 </head>
 <body>
 
-<!-- Replace your current <nav class="navbar"> ... </nav> with the following: -->
-    <nav class="navbar">
-      <div class="logo">Empathy Simulator</div>
-      <ul class="nav-links">
-        <li><a href="empathy_simulator.html">Empathy Simulator</a></li>
-        <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
-        <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
-        <li><a href="art_gallery.php">Empathy Art</a></li>
-      </ul>
-    </nav>
-
+<nav class="navbar">
+  <div class="logo">Empathy Simulator</div>
+  <ul class="nav-links">
+    <li><a href="empathy_simulator.php">Empathy Simulator</a></li>
+    <li><a href="empathy_quiz.php">Empathy Quiz or Test</a></li>
+    <li><a href="anonymous_advice_wall.php">Anonymous Advice Wall</a></li>
+    <li><a href="art_gallery.php">Empathy Art</a></li>
+    
+   
+  </ul>
+</nav>
+  
   <main>
     <div class="container">
       <h2>Share Your Anonymous Advice 💬</h2>
